@@ -1,0 +1,79 @@
+ <meta charset="utf-8">
+ 
+ <canvas id="tela" width="600" height="400"> </canvas>
+ 
+ <script>
+ 
+ var tela = document.getElementById("tela");
+ var c = tela.getContext("2d");
+ 
+ //TAMANHO DO RAIO
+ var raio = 40;
+ 
+ //VARIAVEIS PARA INDICAR A POSICAO DO ALVO NA TELA
+ var alvoX;
+ var alvoY;
+ 
+ //DESENHA O ALVO
+ var desenhaAlvo = function(x, y){
+	//1º CIRCULO 
+	circulo(x, y, raio, "white");
+	//2ª CIRCULO 
+	circulo(x, y, raio - 10, "red");
+	//3º CIRCULO 
+	circulo(x, y, raio - 20, "white");
+	//4º CIRCULO 
+	circulo(x, y, raio - 30, "red");
+	
+ };
+ 
+ 
+ //DESENHA CIRCULO
+var circulo = function(x, y, raio, color){
+	c.fillStyle = color;
+	c.beginPath();
+	c.arc(x, y, raio, 0, 2 * Math.PI);
+	c.fill();
+};
+
+//RETORNA UM NUMERO RANDOM ENTRE MINIMO E MAXIMO
+var sorteia = function(max, min){
+	 return Math.random() * (max - min) + min;
+};
+
+
+//LIMPA O ALVO DA TELA
+var limpa = function(){
+	c.clearRect(0, 0, 600, 400);
+};
+
+
+//DESENHA NA TELA O ALVO NA POSIÇÃO alvoX e alvoY
+var desenha = function(){
+	limpa();
+	alvoX = sorteia(600, 0);
+	alvoY = sorteia(400, 0);
+	desenhaAlvo(alvoX, alvoY);
+	
+};
+
+//CHAMA A FUNCAO PARA DESENHAR O ALVO E MOSTRA O ALVO A CADA 1S.
+setInterval(desenha, 1000);
+
+//VERIFICA SE ACERTOU O ALVO
+var acertouAlvo = function(evento){
+	var x = evento.pageX - tela.offsetLeft;
+	var y = evento.pageY - tela.offsetTop;
+	
+	
+	if((x > alvoX - raio) && (x < alvoX + raio) &&
+		(y > alvoY - raio) && (y < alvoY + raio)){
+			alert("Parabéns! Você acertou o alvo.");
+	}
+
+}
+
+//PEGA O EVENTO DO CLIQUE DO MOUSE E CHAMA A FUNCAO PARA VERIFICAR SE ACERTOU
+tela.onclick = acertouAlvo;
+
+ </script>
